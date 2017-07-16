@@ -9,7 +9,10 @@
 #ifndef CLOCK_H_
 #define CLOCK_H_
 
- uint8_t Setup32MHzClock(void);
+/* see Project -> Properties -> AVR/GNU C Compiler -> Symbols for F_CPU */
+
+
+void Setup32MHzClock(void);
 
 
 

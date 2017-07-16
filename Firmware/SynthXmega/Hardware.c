@@ -11,7 +11,7 @@
 
  
 
- void SetupLeds(void);
+void SetupLeds(void);
 
 
 
@@ -26,7 +26,7 @@
 	* set pins as outputs
 	*Set them high to turn off
 	*/
-	PORT_SetPinAsOutput(&LEDPORT, LED0_bm | LED1_bm);
+	PORT_SetPinsAsOutput(&LEDPORT, LED0_bm | LED1_bm);
 	PORT_SetPins(&LEDPORT, LED0_bm | LED1_bm);
  }
 
