@@ -1,16 +1,24 @@
-/*
- * SynthBasic.c
+   /*! \file 
+ *		 main.c
  *
- * Created: 03/06/2017 16:45:32
- * Author : Ryan
- */ 
-
-#include <avr/io.h>
-
+ * \brief
+ *      main entrance to programme
+ *
+ * \author
+ *      Ryan
+ * \date 
+		03/06/2017 16:45:32
+ *****************************************************************************/ 
 #include "Clock.h"
 #include "Hardware.h"
 #include "TestFunctions.h"
 
+ /*! \brief This is the main entrance to code.
+ *
+ * \param None
+ *
+ * \return int should never return
+ */
 int main(void)
 {
 	/* setup the clock */

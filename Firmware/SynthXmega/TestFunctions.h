@@ -1,11 +1,16 @@
-/*
- * TestFunctions.h
+ 
+  /*! \file 
+ *		 TestFunctions.h
  *
- * Created: 16/07/2017 21:11:06
- *  Author: Ryan
- */ 
-
-
+ * \brief
+ *      Header file for TestFunctions.
+ *
+ * \author
+ *      Ryan
+ * \date 
+		16/07/2017 21:10:23
+ *****************************************************************************/
+ 
 #ifndef TESTFUNCTIONS_H_
 #define TESTFUNCTIONS_H_
 

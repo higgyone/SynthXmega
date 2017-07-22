@@ -1,15 +1,25 @@
-/*
- * TestFuncitons.c
+ /*! \file 
+ *		 TestFuncitons.c
  *
- * Created: 16/07/2017 21:10:23
- *  Author: Ryan
- */ 
+ * \brief
+ *      Contains test functions for the code.
+ *
+ * \author
+ *      Ryan
+ * \date 
+		16/07/2017 21:10:23
+ *****************************************************************************/
 
  #include <util/delay.h>
 
  #include "Hardware.h"
 
- /* test the flashing of the LEDS */
+ /*! \brief This function tests the flashing of the LEDS.
+ *
+ * \param None
+ *
+ * \return None
+ */
  void TestLedsFlash(void)
  {
 	 LedOnOff(LED0, LedOff);
