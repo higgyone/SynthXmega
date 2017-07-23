@@ -30,6 +30,7 @@ typedef enum
 
 void BoardInit(void);
 void LedOnOff(Led_t led, LedState_t state);
+void SetupADC0(void);
 
 
 #endif /* HARDWARE_H_ */

@@ -83,8 +83,14 @@
         <avrgcc.linker.libraries.Libraries>
           <ListValues>
             <Value>libm</Value>
+            <Value>nvm_asm.s</Value>
           </ListValues>
         </avrgcc.linker.libraries.Libraries>
+        <avrgcc.linker.libraries.LibrarySearchPaths>
+          <ListValues>
+            <Value>C:\Users\Ryan\Source\Repos\SynthXmega\Firmware\SynthXmega\xdrivers\nvm</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.LibrarySearchPaths>
         <avrgcc.assembler.general.IncludePaths>
           <ListValues>
             <Value>%24(PackRepoDir)\Atmel\XMEGAE_DFP\1.2.51\include</Value>
@@ -108,6 +114,7 @@
           <ListValues>
             <Value>DEBUG</Value>
             <Value>F_CPU=32000000UL</Value>
+            <Value>BOARD=XMEGA_E5_XPLAINED</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
@@ -115,7 +122,6 @@
             <Value>%24(PackRepoDir)\Atmel\XMEGAE_DFP\1.2.51\include</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
         <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
         <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
         <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
@@ -138,7 +144,19 @@
     <Compile Include="Clock.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\adc\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\adc\adc_e.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\clock\clksys_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\nvm\nvm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\nvm\nvm_asm.s">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\port\port_driver.c">
@@ -156,11 +174,26 @@
     <Compile Include="TestFunctions.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="utils\sleepmgr\xmega\sleepmgr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="utils\sysclk\xmega\sysclk.c">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="drivers" />
     <Folder Include="drivers\clock" />
+    <Folder Include="drivers\adc" />
+    <Folder Include="drivers\cpu" />
+    <Folder Include="drivers\sleep" />
+    <Folder Include="drivers\nvm" />
     <Folder Include="drivers\port" />
+    <Folder Include="utils" />
+    <Folder Include="utils\sleepmgr" />
+    <Folder Include="utils\sleepmgr\xmega" />
+    <Folder Include="utils\sysclk" />
+    <Folder Include="utils\sysclk\xmega" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
