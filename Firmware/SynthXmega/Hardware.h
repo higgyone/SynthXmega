@@ -9,28 +9,20 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
+#include <stdbool.h>
+#include "avr/io.h"
+
 #define LED0_PIN	4
 #define LED1_PIN	5
 #define LED0_bm		0x10
 #define LED1_bm		0x20
 #define LEDPORT		PORTD
 
+extern int8_t adcOffset;
+extern bool SystemTimerFired;
 
- typedef enum 
-{
-	LedOn,
-	LedOff
-}LedState_t;
-
-typedef enum  
-{
-	LED0,
-	LED1
-}Led_t;
 
 void BoardInit(void);
-void LedOnOff(Led_t led, LedState_t state);
-void SetupADC0(void);
 
 
 #endif /* HARDWARE_H_ */

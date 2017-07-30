@@ -15,7 +15,9 @@
 #define TESTFUNCTIONS_H_
 
  void TestLedsFlash(void);
-
+ void TestADCDebugOutput(void);
+ void TestADCLPF(void);
+ void TestTCC4Leds(void);
 
 
 #endif /* TESTFUNCTIONS_H_ */

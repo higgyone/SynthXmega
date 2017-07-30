@@ -26,7 +26,7 @@
 	 
 	 do 
 	 {
-
+		/* wait for clock to be ready */
 	 } while ( CLKSYS_IsReady( OSC_RC32MRDY_bm ) == 0 );
 
 	 CLKSYS_Main_ClockSource_Select( CLK_SCLKSEL_RC32M_gc );

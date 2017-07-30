@@ -14,13 +14,19 @@
  #include "drivers/port/port_driver.h"
  #include "drivers/adc/adc.h"
  #include "avr/io.h"
+ #include "TestFunctions.h"
 
  #include <string.h>
+ #include <util/delay.h>
 
- int8_t adcOffset;
+int8_t adcOffset = 0;
+bool SystemTimerFired = false;
 
 void SetupLeds(void);
-
+void SetupBackgroundTC0(void);
+void SetupADC0(void);
+void EnableInterrupts(void);
+ISR(TCC4_CCA_vect);
 
  /*! \brief This function runs the initialization routine for the board.
  *
@@ -29,12 +35,63 @@ void SetupLeds(void);
  * \return None
  */
  void BoardInit(void)
- {
+ {	
 	SetupLeds();
 
 	SetupADC0();
+
+	SetupBackgroundTC0();
+
+	EnableInterrupts();
  }
 
+  /*! \brief This function enables the interrupts for the board.
+ *
+ * \param None
+ *
+ * \return None
+ */
+ void EnableInterrupts(void)
+ {
+	/* set the lo level interrupts on */
+	PMIC.CTRL |= PMIC_LOLVLEN_bm;
+
+	/* enable global interrupts*/
+	sei();
+ }
+
+   /*! \brief This function sets up background timer counter. 
+ * It runs every 5ms on TCC4
+ *
+ * \param None
+ *
+ * \return None
+ */
+ void SetupBackgroundTC0(void)
+ {
+	/* set for 5ms using 32MHz clock and 1024 divider
+	* 32000000/1024 = 31250 counts per second
+	* every 5ms = 31250/ 200 = 156.26 = 0x9C */
+	//TCC4.PERBUF = 0x9C;
+	TCC4.PERBUF = 0xC35;
+
+	/* set clock prescaler to /1024 */
+	TCC4.CTRLA = (TCC4.CTRLA & ~TC4_CLKSEL_gm) | TC_CLKSEL_DIV1024_gc;
+
+	/* set the lo level interrupt on for CCA */
+	TCC4.INTCTRLB = (TCC4.INTCTRLB & ~TC_CCAINTLVL_LO_gc) | TC_CCAINTLVL_LO_gc;
+
+	TCC4.CTRLGCLR = 0b100000;
+ }
+
+  /*! \brief This function sets up ADC0.
+ * 12bit, unsigned and vref of AVcc/2
+ * Input is PA0
+ *
+ * \param None
+ *
+ * \return None
+ */
  void SetupADC0(void)
  {
 	struct adc_config adcConfig;
@@ -58,7 +115,6 @@ void SetupLeds(void);
 
 	/* get offset value for ADC A*/
 	adcch_set_input(&adcChConf0, ADCCH_POS_PIN1, ADCCH_NEG_PIN1, 1);
-
 	adcch_write_configuration(&ADCA, ADC_CH0, &adcChConf0);
 
 	adc_enable(&ADCA);
@@ -83,19 +139,6 @@ void SetupLeds(void);
 	adc_write_configuration(&ADCA, &adcConfig);
 
 	adc_enable(&ADCA);
-
-	uint16_t sample;
-	uint32_t total;
-
-	while(total < 0xFFFF)
-	{
-		adc_start_conversion(&ADCA, ADC_CH0);
-		adc_wait_for_interrupt_flag(&ADCA, ADC_CH0);
-		sample = adc_get_unsigned_result(&ADCA, ADC_CH0) - adcOffset;
-
-		total+= sample;
-	}
-
  }
 
   /*! \brief This function sets up the LED pins on the board.
@@ -114,33 +157,19 @@ void SetupLeds(void);
 	PORT_SetPins(&LEDPORT, LED0_bm | LED1_bm);
  }
 
-  /*! \brief This function turns the specified LED on or off.
+ /**********************************************************************/
+ /*************************Interrupts***********************************/
+ /**********************************************************************/
+
+   /*! \brief This is Compare channel A for timer 4 on port C interrupt. 
+ * It runs every 5ms on TCC4
  *
- * \param led   LED to turn on or off
- * \param state State to set LED
+ * \param None
+ *
+ * \return None
  */
- void LedOnOff(Led_t led, LedState_t state)
+ ISR(TCC4_CCA_vect)
  {
-	if (led == LED0)
-	{
-		if (state == LedOn)
-		{
-			PORT_ClearPins(&LEDPORT, LED0_bm);
-		}
-		else
-		{
-			PORT_SetPins(&LEDPORT, LED0_bm);
-		}	
-	}
-	else
-	{
-		if (state == LedOn)
-		{
-			PORT_ClearPins(&LEDPORT, LED1_bm);
-		}
-		else
-		{
-			PORT_SetPins(&LEDPORT, LED1_bm);
-		}
-	}
+	 /* set the global flag */
+	 SystemTimerFired = true;
  }

@@ -2,3 +2,5 @@
 /Firmware/SynthXmega/Debug
 /Firmware/SynthXmega/drivers/port/doesnotwork_port_driver.c
 /Firmware/.vs/SynthXmega/v14/.atsuo
+/Firmware/SynthXmega/xdrivers/tc/TC_driver.c
+/Firmware/SynthXmega/xdrivers/tc/TC_driver.h

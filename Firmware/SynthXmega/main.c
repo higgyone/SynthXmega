@@ -12,6 +12,11 @@
 #include "Clock.h"
 #include "Hardware.h"
 #include "TestFunctions.h"
+#include "avr/io.h"
+#include "SleepXmega.h"
+
+ #include <util/delay.h>
+
 
  /*! \brief This is the main entrance to code.
  *
@@ -27,11 +32,21 @@ int main(void)
 	/* setup the board */
 	BoardInit();
 
-
-    /* Replace with your application code */
+    /* Main loop */
     while (1) 
     {
-		TestLedsFlash();
+		if (SystemTimerFired)
+		{
+			SystemTimerFired = false;
+
+			/* do tests */
+			TestTCC4Leds();
+			TestADCLPF();
+		}
+
+		Sleep();
     }
 }
+
+
 
