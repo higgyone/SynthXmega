@@ -84,7 +84,7 @@ ISR(TCC4_CCA_vect);
 	TCC4.CTRLGCLR = 0b100000;
  }
 
-  /*! \brief This function sets up ADC0.
+  /*! \brief This function sets up ADC0 and gets the offset value.
  * 12bit, unsigned and vref of AVcc/2
  * Input is PA0
  *

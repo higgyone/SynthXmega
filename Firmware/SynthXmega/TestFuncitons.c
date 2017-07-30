@@ -39,7 +39,7 @@
 	 _delay_ms(1000);
  }
 
- /*! \brief This function flahses LED0.
+ /*! \brief This function flashes LED0.
  *
  * \param None
  *
