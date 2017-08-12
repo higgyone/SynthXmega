@@ -15,6 +15,8 @@
  #include "drivers/adc/adc.h"
  #include "avr/io.h"
  #include "TestFunctions.h"
+ #include "drivers/spi/spi_driver.h"
+ #include "Spi.h"
 
  #include <string.h>
  #include <util/delay.h>
@@ -22,10 +24,14 @@
 int8_t adcOffset = 0;
 bool SystemTimerFired = false;
 
+
+
 void SetupLeds(void);
 void SetupBackgroundTC0(void);
 void SetupADC0(void);
 void EnableInterrupts(void);
+void SetupSpi(void);
+void SetupDAC(void);
 ISR(TCC4_CCA_vect);
 
  /*! \brief This function runs the initialization routine for the board.
@@ -43,6 +49,10 @@ ISR(TCC4_CCA_vect);
 	SetupBackgroundTC0();
 
 	EnableInterrupts();
+
+	SetupSpi();
+
+	SetupDAC();
  }
 
   /*! \brief This function enables the interrupts for the board.
@@ -139,6 +149,13 @@ ISR(TCC4_CCA_vect);
 	adc_write_configuration(&ADCA, &adcConfig);
 
 	adc_enable(&ADCA);
+}
+ 
+ void SetupDAC(void)
+ {
+	DACA.CTRLB = ( DACA.CTRLB & ~DAC_CHSEL_gm ) | DAC_CHSEL_SINGLE_gc;
+	DACA.CTRLC = ( DACA.CTRLC & ~DAC_REFSEL_gm ) | DAC_REFSEL_AVCC_gc;
+	DACA.CTRLA = ( DAC_CH0EN_bm | DAC_ENABLE_bm );
  }
 
   /*! \brief This function sets up the LED pins on the board.
@@ -156,6 +173,8 @@ ISR(TCC4_CCA_vect);
 	PORT_SetPinsAsOutput(&LEDPORT, LED0_bm | LED1_bm);
 	PORT_SetPins(&LEDPORT, LED0_bm | LED1_bm);
  }
+
+ 
 
  /**********************************************************************/
  /*************************Interrupts***********************************/

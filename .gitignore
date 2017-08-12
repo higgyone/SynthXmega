@@ -4,3 +4,9 @@
 /Firmware/.vs/SynthXmega/v14/.atsuo
 /Firmware/SynthXmega/xdrivers/tc/TC_driver.c
 /Firmware/SynthXmega/xdrivers/tc/TC_driver.h
+/Firmware/SynthXmega/drivers/tc/TC_driver.c
+/Firmware/SynthXmega/drivers/tc/TC_driver.h
+/Firmware/SynthXmega/xdrivers/dac/dac_driver.c
+/Firmware/SynthXmega/xdrivers/dac/dac_driver.h
+/Firmware/SynthXmega/xdrivers/spi/spi_driver.c
+/Firmware/SynthXmega/xdrivers/spi/spi_driver.h

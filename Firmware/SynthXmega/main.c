@@ -14,6 +14,8 @@
 #include "TestFunctions.h"
 #include "avr/io.h"
 #include "SleepXmega.h"
+#include "Spi.h"
+#include "LPF.h"
 
  #include <util/delay.h>
 
@@ -32,6 +34,8 @@ int main(void)
 	/* setup the board */
 	BoardInit();
 
+	SendDDS();
+
     /* Main loop */
     while (1) 
     {
@@ -42,8 +46,10 @@ int main(void)
 			/* do tests */
 			TestTCC4Leds();
 			TestADCLPF();
+			TestDAC(lpf);
 		}
 
+		//TestSpi();
 		Sleep();
     }
 }

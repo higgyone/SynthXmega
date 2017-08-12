@@ -18,7 +18,9 @@
  #include "LPF.h"
  #include "drivers/port/port_driver.h"
  #include "Leds.h"
+ #include "Spi.h"
 
+ uint8_t testSpiSendData[4] = {0x11, 0x22, 0x33, 0x44};
 
  /*! \brief This function tests the flashing of the LEDS.
  *
@@ -87,4 +89,19 @@
 	sample = adc_get_unsigned_result(&ADCA, ADC_CH0) - adcOffset;
  
 	AddLPFValue(sample);
+ }
+
+ void TestSpi(void)
+ {
+	_delay_ms(100);
+	SendSPIPacket(testSpiSendData, 4);
+ }
+
+ void TestDAC(uint16_t data)
+ {
+	while ( (DACA.STATUS & DAC_CH0DRE_bm ) == false ) {
+		/* Blocking code waiting for empty register. */
+	}
+
+	DACA.CH0DATA = data;
  }

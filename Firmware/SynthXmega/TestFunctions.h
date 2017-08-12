@@ -18,6 +18,8 @@
  void TestADCDebugOutput(void);
  void TestADCLPF(void);
  void TestTCC4Leds(void);
+ void TestSpi(void);
+ void TestDAC(uint16_t data);
 
 
 #endif /* TESTFUNCTIONS_H_ */
