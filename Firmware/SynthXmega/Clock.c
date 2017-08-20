@@ -13,6 +13,15 @@
  #include "Clock.h"
  #include "drivers/clock/clksys_driver.h"
 
+ void Setup32MHzClock(void);
+ void Setup32KHzClock(void);
+
+ void SetupClocks(void)
+ {
+	Setup32MHzClock();
+	Setup32KHzClock();
+ }
+
   /*! \brief This function sets up the clock speed on the board.
   * Setup and get the 32MHz clock running  with no prescaler
  *
@@ -31,4 +40,23 @@
 
 	 CLKSYS_Main_ClockSource_Select( CLK_SCLKSEL_RC32M_gc );
  }
+
+ void Setup32KHzClock(void)
+ {
+	/* turn on the 32KHz clock for RTC */
+	OSC.CTRL |= OSC_RC32KEN_bm;
+
+	do 
+	{
+		/* Wait for the 32kHz oscillator to stabilize. */
+	} while ( ( OSC.STATUS & OSC_RC32KRDY_bm ) == 0);
+
+	/* set to 32KHz and enable it */
+	CLK.RTCCTRL = CLK_RTCSRC_RCOSC32_gc | CLK_RTCEN_bm;
+
+	do 
+	{
+		/* Wait until RTC is not busy. */
+	} while ( RTC.STATUS & RTC_SYNCBUSY_bm );
+ } 
 

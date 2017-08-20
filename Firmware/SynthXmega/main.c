@@ -29,7 +29,7 @@
 int main(void)
 {
 	/* setup the clock */
-	Setup32MHzClock();
+	SetupClocks();
 
 	/* setup the board */
 	BoardInit();
@@ -44,13 +44,14 @@ int main(void)
 			SystemTimerFired = false;
 
 			/* do tests */
-			TestTCC4Leds();
+			TestLed0();
 			TestADCLPF();
 			TestDAC(lpf);
+			//TestPWMFreq(lpf);
 		}
 
 		//TestSpi();
-		Sleep();
+		//Sleep();
     }
 }
 

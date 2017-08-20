@@ -17,9 +17,10 @@
  void TestLedsFlash(void);
  void TestADCDebugOutput(void);
  void TestADCLPF(void);
- void TestTCC4Leds(void);
+ void TestLed0(void);
  void TestSpi(void);
  void TestDAC(uint16_t data);
+ void TestPWMFreq(uint16_t value);
 
 
 #endif /* TESTFUNCTIONS_H_ */

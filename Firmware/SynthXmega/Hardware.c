@@ -17,6 +17,9 @@
  #include "TestFunctions.h"
  #include "drivers/spi/spi_driver.h"
  #include "Spi.h"
+ #include "Rtc.h"
+ #include "PWM.h"
+ #include "Uart.h"
 
  #include <string.h>
  #include <util/delay.h>
@@ -32,7 +35,8 @@ void SetupADC0(void);
 void EnableInterrupts(void);
 void SetupSpi(void);
 void SetupDAC(void);
-ISR(TCC4_CCA_vect);
+//ISR(TCC4_CCA_vect);
+ISR(RTC_OVF_vect);
 
  /*! \brief This function runs the initialization routine for the board.
  *
@@ -46,13 +50,19 @@ ISR(TCC4_CCA_vect);
 
 	SetupADC0();
 
-	SetupBackgroundTC0();
+	//SetupBackgroundTC0();
 
-	EnableInterrupts();
+	SetupRTC();
 
 	SetupSpi();
 
 	SetupDAC();
+
+	SetupPWM();
+
+	SetupUart();
+
+	EnableInterrupts();
  }
 
   /*! \brief This function enables the interrupts for the board.
@@ -65,6 +75,7 @@ ISR(TCC4_CCA_vect);
  {
 	/* set the lo level interrupts on */
 	PMIC.CTRL |= PMIC_LOLVLEN_bm;
+	PMIC.CTRL |= PMIC_HILVLEN_bm;
 
 	/* enable global interrupts*/
 	sei();
@@ -93,6 +104,7 @@ ISR(TCC4_CCA_vect);
 
 	TCC4.CTRLGCLR = 0b100000;
  }
+
 
   /*! \brief This function sets up ADC0 and gets the offset value.
  * 12bit, unsigned and vref of AVcc/2
@@ -187,8 +199,21 @@ ISR(TCC4_CCA_vect);
  *
  * \return None
  */
- ISR(TCC4_CCA_vect)
- {
-	 /* set the global flag */
-	 SystemTimerFired = true;
- }
+ //ISR(TCC4_CCA_vect)
+ //{
+	 ///* set the global flag */
+	 //SystemTimerFired = true;
+ //}
+
+ISR(RTC_OVF_vect)
+{
+	/* set the global flag */
+	SystemTimerFired = true;
+}
+
+ISR(USARTC0_RXC_vect)
+{
+	uint8_t data = USARTC0.DATA;
+
+	USARTC0.DATA = data;
+}

@@ -16,8 +16,7 @@
 /* see Project -> Properties -> AVR/GNU C Compiler -> Symbols for F_CPU */
 
 
-void Setup32MHzClock(void);
-
+void SetupClocks(void);
 
 
 #endif /* CLOCK_H_ */

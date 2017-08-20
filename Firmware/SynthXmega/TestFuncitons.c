@@ -19,6 +19,7 @@
  #include "drivers/port/port_driver.h"
  #include "Leds.h"
  #include "Spi.h"
+ #include "PWM.h"
 
  uint8_t testSpiSendData[4] = {0x11, 0x22, 0x33, 0x44};
 
@@ -47,7 +48,7 @@
  *
  * \return None
  */
- void TestTCC4Leds(void)
+ void TestLed0(void)
  {
 	ToggleLed0();
  }
@@ -104,4 +105,9 @@
 	}
 
 	DACA.CH0DATA = data;
+ }
+
+ void TestPWMFreq(uint16_t value)
+ {
+	SetPWMAudioFreq(value);
  }
