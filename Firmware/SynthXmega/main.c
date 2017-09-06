@@ -16,6 +16,7 @@
 #include "SleepXmega.h"
 #include "Spi.h"
 #include "LPF.h"
+#include "Uart.h"
 
  #include <util/delay.h>
 
@@ -34,7 +35,13 @@ int main(void)
 	/* setup the board */
 	BoardInit();
 
-	SendDDS();
+	ClearConsole();
+
+	//SendDDS();
+
+	ResetDDS();
+
+	//SendMidiFreq(69u);
 
     /* Main loop */
     while (1) 
@@ -48,6 +55,9 @@ int main(void)
 			TestADCLPF();
 			TestDAC(lpf);
 			//TestPWMFreq(lpf);
+			//TestSerialOut();
+
+			TestMidiFreq();
 		}
 
 		//TestSpi();

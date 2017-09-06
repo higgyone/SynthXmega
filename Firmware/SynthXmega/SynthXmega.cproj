@@ -187,10 +187,25 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Midi2AD99833.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MidiState.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MidiState.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="PWM.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="PWM.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RingBuffer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RingBuffer.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Rtc.c">

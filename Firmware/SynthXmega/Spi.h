@@ -17,5 +17,7 @@
 void SetupSpi(void);
 void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive);
 void SendDDS(void);
+void SendMidiFreq(uint8_t freq);
+void ResetDDS(void);
 
 #endif /* SPI_H_ */

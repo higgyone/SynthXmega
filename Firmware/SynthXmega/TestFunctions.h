@@ -21,6 +21,7 @@
  void TestSpi(void);
  void TestDAC(uint16_t data);
  void TestPWMFreq(uint16_t value);
-
+ void TestSerialOut(void);
+ void TestMidiFreq(void);
 
 #endif /* TESTFUNCTIONS_H_ */

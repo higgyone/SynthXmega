@@ -8,6 +8,11 @@
 
   #include "Hardware.h"
   #include "avr/io.h"
+  #include "RingBuffer.h"
+
+  static ringBuffDescriptor rbd;
+  static uint8_t ringBuffMem[16];
+  static int8_t InitRingBuffer(void);
 
  void SetupUart(void)
  {
@@ -31,9 +36,40 @@
 	* 63 = 32MHz/(1*16*31250) - 1 = 0x3F*/
 	USARTC0.BAUDCTRLA = 0x3F;
 
-	/* enable Rx */
-	USARTC0.CTRLB |= USART_RXEN_bm;
+	if (InitRingBuffer() == 0)
+	{
+		/* enable Rx */
+		USARTC0.CTRLB |= USART_RXEN_bm;
 
-	/* enable Tx */
-	USARTC0.CTRLB |= USART_TXEN_bm;
+		/* enable Tx */
+		USARTC0.CTRLB |= USART_TXEN_bm;
+	}
+ }
+
+
+
+ void UartWrite(uint8_t data)
+ {
+	while ((USARTC0.STATUS & USART_DREIF_bm) == 0)
+	{
+		
+	}
+
+	USARTC0.DATA = data;
+ }
+
+  void ClearConsole(void)
+  {
+	  UartWrite(27);
+	  UartWrite('[');
+	  UartWrite('2');
+	  UartWrite('J');
+	  UartWrite(12);
+  }
+
+ static int8_t InitRingBuffer(void)
+ {
+	ringBuffAttr attr = {sizeof(ringBuffMem[0]), sizeof(ringBuffMem), ringBuffMem};
+
+	return RingBufferSetup(&rbd, &attr);
  }

@@ -20,6 +20,7 @@
  #include "Rtc.h"
  #include "PWM.h"
  #include "Uart.h"
+ #include "RingBuffer.h"
 
  #include <string.h>
  #include <util/delay.h>
@@ -35,7 +36,7 @@ void SetupADC0(void);
 void EnableInterrupts(void);
 void SetupSpi(void);
 void SetupDAC(void);
-//ISR(TCC4_CCA_vect);
+
 ISR(RTC_OVF_vect);
 
  /*! \brief This function runs the initialization routine for the board.
@@ -213,7 +214,14 @@ ISR(RTC_OVF_vect)
 
 ISR(USARTC0_RXC_vect)
 {
-	uint8_t data = USARTC0.DATA;
+	uint8_t rxData = USARTC0.DATA;
+	uint8_t txData = 0;
 
-	USARTC0.DATA = data;
+	RingBufferAdd(0, &rxData);
+
+	//USARTC0.DATA = data;
+
+	RingBufferGet(0, &txData);
+
+	USARTC0.DATA = txData;
 }

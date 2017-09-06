@@ -12,6 +12,7 @@
 
 #include "drivers/spi/spi_driver.h"
 #include "avr/io.h"
+#include "Midi2AD99833.h"
 
 /*! \brief The number of test data bytes. */
 #define NUM_BYTES     4
@@ -31,7 +32,8 @@ SPI_Master_t spiMasterC;
 #define NUM_SPI_BYTES 2
 uint8_t ddsEnterReset[NUM_SPI_BYTES] = {0x21, 0x00};
 
-uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x50, 0xc7};
+//uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x50, 0xc7}; // 400hz
+uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x69, 0xf1}; // 1khz
 uint8_t	ddsFreq1[NUM_SPI_BYTES] = {0x40, 0x00};
 
 uint8_t ddsPhase0[NUM_SPI_BYTES] = {0xC0, 0x00};
@@ -89,15 +91,29 @@ void SetupSpi(void)
 	//SendSPIPacket(&masterSendData, NUM_BYTES);
  }
 
+void SendMidiFreq(uint8_t freq)
+{
+	uint8_t freq0[2] = {Midi2AD9833[freq][2], Midi2AD9833[freq][3]};
+	uint8_t freq1[2] = { Midi2AD9833[freq][0], Midi2AD9833[freq][1]};
+	
+	//SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
+	SendSPIPacket(freq0, NUM_SPI_BYTES);
+	SendSPIPacket(freq1, NUM_SPI_BYTES);
+	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
+	//SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+}
 
+void ResetDDS(void)
+{
+	SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
+	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+}
 
 void SendDDS(void)
 {
-	//SendSPIPacket(ddsAll, 12u);
 	SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
 	SendSPIPacket(ddsFreq0, NUM_SPI_BYTES);
 	SendSPIPacket(ddsFreq1, NUM_SPI_BYTES);
 	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
 	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
-
 }

@@ -10,7 +10,8 @@
 #define UART_H_
 
  void SetupUart(void);
-
+ void ClearConsole(void);
+ void UartWrite(uint8_t data);
 
 
 #endif /* UART_H_ */

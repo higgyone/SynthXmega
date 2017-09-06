@@ -83,7 +83,6 @@
  void TestADCLPF(void)
  {
 	 uint16_t sample;
-	 uint16_t currentLPF;
 
 	adc_start_conversion(&ADCA, ADC_CH0);
 	adc_wait_for_interrupt_flag(&ADCA, ADC_CH0);
@@ -110,4 +109,50 @@
  void TestPWMFreq(uint16_t value)
  {
 	SetPWMAudioFreq(value);
+ }
+
+ uint8_t usartCount = 0;
+
+ void TestSerialOut(void)
+ {
+	usartCount++;
+
+	if (usartCount > 50)
+	{
+		USARTC0.DATA = 0x29;
+
+		while ((USARTC0.STATUS & USART_DREIF_bm) == 0)
+		{
+			
+		}
+
+		USARTC0.DATA = 0x30;
+		usartCount = 0;
+	}
+ }
+
+ void TestMidiFreq(void)
+ {
+	static uint8_t count = 1;
+	static bool reverse = false;
+
+	SendMidiFreq(count);
+
+	if (count == 127)
+	{
+		reverse = true;
+	}
+	else if (count == 0)
+	{
+		reverse = false;
+	}
+
+	if (reverse)
+	{
+		count--;
+	}
+	else
+	{
+		count++;
+	}
  }
