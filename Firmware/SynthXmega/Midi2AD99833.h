@@ -9,6 +9,8 @@
 #ifndef MIDI2AD99833_H_
 #define MIDI2AD99833_H_
 
+#include "avr/io.h"
+
 static uint8_t Midi2AD9833 [128][4] =
 {
 	{ 0x40, 0x00, 0x40, 0x58 },

@@ -9,6 +9,7 @@
  * \date 
 		08/08/2017 21:41:22
  *****************************************************************************/
+ #include <util/delay.h>
 
 #include "drivers/spi/spi_driver.h"
 #include "avr/io.h"
@@ -35,6 +36,8 @@ uint8_t ddsEnterReset[NUM_SPI_BYTES] = {0x21, 0x00};
 //uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x50, 0xc7}; // 400hz
 uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x69, 0xf1}; // 1khz
 uint8_t	ddsFreq1[NUM_SPI_BYTES] = {0x40, 0x00};
+
+uint8_t ddsOffFreq[NUM_SPI_BYTES] = {0x40, 0x01};
 
 uint8_t ddsPhase0[NUM_SPI_BYTES] = {0xC0, 0x00};
 
@@ -91,10 +94,29 @@ void SetupSpi(void)
 	//SendSPIPacket(&masterSendData, NUM_BYTES);
  }
 
+ void SetupAd9833(void)
+ {
+	uint8_t freq0[2] = {Midi2AD9833[0][2], Midi2AD9833[0][3]};
+	uint8_t freq1[2] = {Midi2AD9833[0][0], Midi2AD9833[0][1]};
+	
+	SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
+	SendSPIPacket(freq0, NUM_SPI_BYTES);
+	SendSPIPacket(freq1, NUM_SPI_BYTES);
+	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
+	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+ }
+
+
+
+void SetMidiOn(void)
+{
+	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+}
+
 void SendMidiFreq(uint8_t freq)
 {
 	uint8_t freq0[2] = {Midi2AD9833[freq][2], Midi2AD9833[freq][3]};
-	uint8_t freq1[2] = { Midi2AD9833[freq][0], Midi2AD9833[freq][1]};
+	uint8_t freq1[2] = {Midi2AD9833[freq][0], Midi2AD9833[freq][1]};
 	
 	//SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
 	SendSPIPacket(freq0, NUM_SPI_BYTES);
@@ -116,4 +138,9 @@ void SendDDS(void)
 	SendSPIPacket(ddsFreq1, NUM_SPI_BYTES);
 	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
 	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+}
+
+void SetMidiOff(void)
+{
+	SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
 }

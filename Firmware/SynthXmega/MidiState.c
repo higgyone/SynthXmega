@@ -8,9 +8,16 @@
  #include "Spi.h"
  #include "Midi2AD99833.h"
  #include "RingBuffer.h"
+ #include "avr/io.h"
+
+ #include <stdbool.h>
+
+ bool MidiData = false;
 
  bool noteOn = false;
  uint8_t currentNote = 0;
+ uint8_t prevNote = 0;
+ uint8_t currentVelocity = 0;
 
 
  void MidiInput(void)
@@ -26,15 +33,30 @@
 		RingBufferGet(0, &data0);
 		RingBufferGet(0, & data1);
 
-		/* if on get note and play it*/
+		currentVelocity = data1;
 
-		/* if off, check it is the note playing and if so turn it off */
+		if (statusByte == 0x90)
+		{
+			currentNote = data0;
+			noteOn = true;
+			SetMidiOn();
+			SendMidiFreq(data0);
+		}
+		else
+		{
+			if (currentNote == data0)
+			{
+				noteOn = false;
+				SetMidiOff();
+			}
+		}
 	}
 	else
 	{
-		while(!IsRingBufferEmpty(0))
+		// flush buffer
+		while (!IsRingBufferEmpty(0))
 		{
-			RingBufferGet(0, &data0);
+			RingBufferGet(0, &statusByte);
 		}
 	}
  }

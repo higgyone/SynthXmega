@@ -17,6 +17,7 @@
 #include "Spi.h"
 #include "LPF.h"
 #include "Uart.h"
+#include "MidiState.h"
 
  #include <util/delay.h>
 
@@ -39,6 +40,8 @@ int main(void)
 
 	//SendDDS();
 
+	SetupAd9833();
+
 	ResetDDS();
 
 	//SendMidiFreq(69u);
@@ -57,11 +60,18 @@ int main(void)
 			//TestPWMFreq(lpf);
 			//TestSerialOut();
 
-			TestMidiFreq();
+			//TestMidiFreq();
 		}
 
 		//TestSpi();
 		//Sleep();
+
+		if (MidiData)
+		{
+			MidiInput();
+
+			MidiData = false;
+		}
     }
 }
 

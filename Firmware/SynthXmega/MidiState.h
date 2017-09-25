@@ -9,8 +9,11 @@
 #ifndef MIDISTATE_H_
 #define MIDISTATE_H_
 
+#include "avr/io.h"
+#include <stdbool.h>
 
-
+bool MidiData;
+ void MidiInput(void);
 
 
 #endif /* MIDISTATE_H_ */

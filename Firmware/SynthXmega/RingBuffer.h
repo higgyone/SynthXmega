@@ -31,6 +31,7 @@ int8_t RingBufferAdd(ringBuffDescriptor rbd, const void *data);
 int8_t RingBufferGet(ringBuffDescriptor rbd, void *data);
 int8_t IsRingBufferFull(ringBuffDescriptor rbd);
 int8_t IsRingBufferEmpty(ringBuffDescriptor rbd);
+int8_t GetRingBuffCount(ringBuffDescriptor rbd);
 
 
 #endif /* RINGBUFFER_H_ */

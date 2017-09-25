@@ -24,6 +24,7 @@
 
  static int8_t RingBufferEmpty(struct ringBuffer *rb);
  static int8_t RingBufferFull(struct ringBuffer *rb);
+ static int8_t RingBufferCount(struct ringBuffer *rb);
 
  int8_t RingBufferSetup(ringBuffDescriptor *rbd, ringBuffAttr *attr)
  {
@@ -63,6 +64,16 @@
  static int8_t RingBufferEmpty(struct ringBuffer *rb)
  {
 	return ((rb->head - rb->tail) == 0U) ? 1 : 0;
+ }
+
+ static int8_t RingBufferCount(struct ringBuffer *rb)
+ {
+	return (rb->head - rb->tail);
+ }
+
+ int8_t GetRingBuffCount(ringBuffDescriptor rbd)
+ {
+	return RingBufferCount(&ringBuff[rbd]);
  }
 
  int8_t IsRingBufferEmpty(ringBuffDescriptor rbd)

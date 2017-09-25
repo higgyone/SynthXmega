@@ -21,6 +21,7 @@
  #include "PWM.h"
  #include "Uart.h"
  #include "RingBuffer.h"
+ #include "MidiState.h"
 
  #include <string.h>
  #include <util/delay.h>
@@ -219,9 +220,14 @@ ISR(USARTC0_RXC_vect)
 
 	RingBufferAdd(0, &rxData);
 
+	if (!MidiData && GetRingBuffCount(0) == 3)
+	{
+		MidiData = true;
+	}
+
 	//USARTC0.DATA = data;
 
-	RingBufferGet(0, &txData);
+	//RingBufferGet(0, &txData);
 
-	USARTC0.DATA = txData;
+	//USARTC0.DATA = txData;
 }
