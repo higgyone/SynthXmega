@@ -16,11 +16,14 @@
 
 void SetupSpi(void);
 void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive);
-void SendDDS(void);
 void SendMidiFreq(uint8_t freq);
 void ResetDDS(void);
 void SetupAd9833(void);
 void SetMidiOff(void);
 void SetMidiOn(void);
+void SetSquare(void);
+void SetSquareHalf(void);
+void SetTriangle(void);
+void SetSine(void);
 
 #endif /* SPI_H_ */

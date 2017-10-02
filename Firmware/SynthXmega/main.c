@@ -38,13 +38,11 @@ int main(void)
 
 	ClearConsole();
 
-	//SendDDS();
-
 	SetupAd9833();
 
 	ResetDDS();
 
-	//SendMidiFreq(69u);
+	SetTriangle();
 
     /* Main loop */
     while (1) 
