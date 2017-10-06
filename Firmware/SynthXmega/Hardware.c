@@ -26,10 +26,11 @@
  #include <string.h>
  #include <util/delay.h>
 
+/* ADC offset */
 int8_t adcOffset = 0;
+
+/* global flag when system timer fires */
 bool SystemTimerFired = false;
-
-
 
 void SetupLeds(void);
 void SetupBackgroundTC0(void);
@@ -37,6 +38,7 @@ void SetupADC0(void);
 void EnableInterrupts(void);
 void SetupSpi(void);
 void SetupDAC(void);
+void SetupWaveSelector(void);
 
 ISR(RTC_OVF_vect);
 
@@ -52,8 +54,6 @@ ISR(RTC_OVF_vect);
 
 	SetupADC0();
 
-	//SetupBackgroundTC0();
-
 	SetupRTC();
 
 	SetupSpi();
@@ -63,6 +63,8 @@ ISR(RTC_OVF_vect);
 	SetupPWM();
 
 	SetupUart();
+
+	SetupWaveSelector();
 
 	EnableInterrupts();
  }
@@ -83,7 +85,8 @@ ISR(RTC_OVF_vect);
 	sei();
  }
 
-   /*! \brief This function sets up background timer counter. 
+   /*! \brief ***Depricated in favour of RTC***
+ * This function sets up background timer counter. 
  * It runs every 5ms on TCC4
  *
  * \param None
@@ -165,6 +168,14 @@ ISR(RTC_OVF_vect);
 	adc_enable(&ADCA);
 }
  
+   /*! \brief This function sets up DAC 0 on port AA.
+ * 12bit, unsigned and vref of AVcc/2
+ * Output is PA0
+ *
+ * \param None
+ *
+ * \return None
+ */
  void SetupDAC(void)
  {
 	DACA.CTRLB = ( DACA.CTRLB & ~DAC_CHSEL_gm ) | DAC_CHSEL_SINGLE_gc;
@@ -188,6 +199,25 @@ ISR(RTC_OVF_vect);
 	PORT_SetPins(&LEDPORT, LED0_bm | LED1_bm);
  }
 
+   /*! \brief This function sets up the Wave type selector input.
+ * It uses Port A pins 1, 3 & 4. For some reason pin 2 didn't pull up
+ * Pins set as inputs and Pull ups as the switch selector will pull to ground
+ * 
+ * \param None
+ *
+ * \return None
+ */
+void SetupWaveSelector(void)
+{
+	/* setup the wave selector pins
+	* set pins as inputs and pulled up
+	*/
+	PORT_SetPinsAsInput(&WAVEPORT, WAVEPINS_bm);
+	PORTA.PIN1CTRL = PORT_OPC_PULLUP_gc;
+	PORTA.PIN4CTRL = PORT_OPC_PULLUP_gc;
+	PORTA.PIN3CTRL = PORT_OPC_PULLUP_gc;
+
+}
  
 
  /**********************************************************************/
@@ -207,16 +237,30 @@ ISR(RTC_OVF_vect);
 	 //SystemTimerFired = true;
  //}
 
+/*! \brief RTC overflow interrupt vector. Setp tiemr fired flag
+* 
+* \param None
+*
+* \return None
+*/
 ISR(RTC_OVF_vect)
 {
 	/* set the global flag */
 	SystemTimerFired = true;
 }
 
+/*! \brief USART receive interrupt vector.
+* Used for collecting MIDI input and adding it to ring buffer
+* When 3 bytes are added - corresponding to midi tone onn or off
+* it sets Midi data available flag
+* 
+* \param None
+*
+* \return None
+*/
 ISR(USARTC0_RXC_vect)
 {
 	uint8_t rxData = USARTC0.DATA;
-	uint8_t txData = 0;
 
 	RingBufferAdd(0, &rxData);
 
@@ -224,10 +268,4 @@ ISR(USARTC0_RXC_vect)
 	{
 		MidiData = true;
 	}
-
-	//USARTC0.DATA = data;
-
-	//RingBufferGet(0, &txData);
-
-	//USARTC0.DATA = txData;
 }

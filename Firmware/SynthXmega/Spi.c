@@ -13,7 +13,8 @@
 
 #include "drivers/spi/spi_driver.h"
 #include "avr/io.h"
-#include "Midi2AD99833.h"
+#include "Midi2AD9833.h"
+#include "Spi.h"
 
 /*! \brief The number of test data bytes. */
 #define NUM_BYTES     4
@@ -50,9 +51,9 @@ uint8_t ddsSquareWaveHalf[NUM_SPI_BYTES] = {0x20, 0x20};
 
 uint8_t ddsAll[12]  ={0x21, 0x00, 0x50, 0xc7, 0x40, 0x00, 0xC0, 0x00, 0x20, 0x00};
 
-enum State { SINE, TRIANGLE, SQUARE, SQUAREHALF};
 
-volatile uint8_t waveState = SINE;
+
+volatile uint8_t WaveState = SINE;
 
 
 void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive)
@@ -99,8 +100,6 @@ void SetupSpi(void)
 					SPI_INTLVL_OFF_gc,
 					false,
 					SPI_PRESCALER_DIV128_gc);
-
-	//SendSPIPacket(&masterSendData, NUM_BYTES);
  }
 
  void SetupAd9833(void)
@@ -123,8 +122,7 @@ void SetupSpi(void)
 
 void SetMidiOn(void)
 {
-
-	switch (waveState)
+	switch (WaveState)
 	{
 		case SINE:
 			ResetDDS();
@@ -162,20 +160,20 @@ void SetMidiOff(void)
 
 void SetTriangle(void)
 {
-	waveState = TRIANGLE;
+	WaveState = TRIANGLE;
 }
 
 void SetSine(void)
 {
-	waveState = SINE;
+	WaveState = SINE;
 }
 
 void SetSquare(void)
 {
-	waveState = SQUARE;
+	WaveState = SQUARE;
 }
 
 void SetSquareHalf(void)
 {
-	waveState = SQUAREHALF;
+	WaveState = SQUAREHALF;
 }

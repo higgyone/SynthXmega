@@ -15,11 +15,9 @@
 #include "avr/io.h"
 #include "SleepXmega.h"
 #include "Spi.h"
-#include "LPF.h"
 #include "Uart.h"
 #include "MidiState.h"
 
- #include <util/delay.h>
 
 
  /*! \brief This is the main entrance to code.
@@ -53,23 +51,21 @@ int main(void)
 
 			/* do tests */
 			TestLed0();
-			TestADCLPF();
-			TestDAC(lpf);
+			//TestADCLPF();
+			//TestDAC(lpf);
 			//TestPWMFreq(lpf);
 			//TestSerialOut();
-
-			//TestMidiFreq();
-		}
-
-		//TestSpi();
-		//Sleep();
+		}	
 
 		if (MidiData)
 		{
+			
 			MidiInput();
 
 			MidiData = false;
 		}
+
+		Sleep();
     }
 }
 

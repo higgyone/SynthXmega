@@ -1,10 +1,14 @@
-/*
- * PWM.h
+   /*! \file 
+ *		 PWM.h
  *
- * Created: 13/08/2017 14:49:28
- *  Author: Ryan
- */ 
-
+ * \brief
+ *      Header file for PWM.c
+ *
+ * \author
+ *      Ryan
+ * \date 
+		13/08/2017 14:49:28
+ *****************************************************************************/ 
 
 #ifndef PWM_H_
 #define PWM_H_

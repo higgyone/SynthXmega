@@ -1,16 +1,21 @@
-/*
- * Midi2AD99833.h
+  /*! \file 
+ *		 Midi2AD9833.h
  *
- * Created: 31/08/2017 21:17:18
- *  Author: Ryan
- */ 
+ * \brief
+ *      Conversion of midi data to AD9833 data
+ *
+ * \author
+ *      Ryan
+ * \date 
+		31/08/2017 21:17:18
+ *****************************************************************************/ 
 
-
-#ifndef MIDI2AD99833_H_
-#define MIDI2AD99833_H_
+#ifndef MIDI2AD9833_H_
+#define MIDI2AD9833_H_
 
 #include "avr/io.h"
 
+/* array holding AD9833 frequency commands for each midi sound from 0 to 127 */
 static uint8_t Midi2AD9833 [128][4] =
 {
 	{ 0x40, 0x00, 0x40, 0x58 },
@@ -143,6 +148,4 @@ static uint8_t Midi2AD9833 [128][4] =
 	{ 0x40, 0x08, 0x4E, 0x21 }
 };
 
-
-
-#endif /* MIDI2AD99833_H_ */
+#endif /* MIDI2AD9833_H_ */

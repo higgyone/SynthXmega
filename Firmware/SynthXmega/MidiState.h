@@ -1,9 +1,14 @@
-/*
- * MidiState.h
+  /*! \file 
+ *		 MidiState.h
  *
- * Created: 06/09/2017 21:41:04
- *  Author: Ryan
- */ 
+ * \brief
+ *      Header file for MidiState.c
+ *
+ * \author
+ *      Ryan
+ * \date 
+		06/09/2017 21:41:04
+ *****************************************************************************/
 
 
 #ifndef MIDISTATE_H_
@@ -13,7 +18,7 @@
 #include <stdbool.h>
 
 bool MidiData;
- void MidiInput(void);
+void MidiInput(void);
 
 
 #endif /* MIDISTATE_H_ */

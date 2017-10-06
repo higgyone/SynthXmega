@@ -16,13 +16,19 @@
  void Setup32MHzClock(void);
  void Setup32KHzClock(void);
 
+  /*! \brief Sets up the main clocks on the board
+ *
+ * \param None
+ *
+ * \return None
+ */
  void SetupClocks(void)
  {
 	Setup32MHzClock();
 	Setup32KHzClock();
  }
 
-  /*! \brief This function sets up the clock speed on the board.
+  /*! \brief This function sets the main 32MHz clock.
   * Setup and get the 32MHz clock running  with no prescaler
  *
  * \param None
@@ -41,6 +47,12 @@
 	 CLKSYS_Main_ClockSource_Select( CLK_SCLKSEL_RC32M_gc );
  }
 
+  /*! \brief Sets up the 32KHz clock used for the RTC
+ *
+ * \param None
+ *
+ * \return None
+ */
  void Setup32KHzClock(void)
  {
 	/* turn on the 32KHz clock for RTC */

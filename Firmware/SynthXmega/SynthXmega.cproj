@@ -187,7 +187,7 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Midi2AD99833.h">
+    <Compile Include="Midi2AD9833.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MidiState.c">

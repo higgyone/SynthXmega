@@ -14,8 +14,13 @@
 
  #include "LPF.h"
 
+ /* current low pass filter value */
  volatile uint16_t lpf = 0;
+
+ /* previous low pass filter value */
  uint16_t prevLpf = 0;
+
+ /* first pass at low pass filter flag */
  bool firstRun = true;
 
   /*! \brief This function adds a value to the LPF.

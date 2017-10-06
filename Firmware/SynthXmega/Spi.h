@@ -14,6 +14,9 @@
 #ifndef SPI_H_
 #define SPI_H_
 
+extern volatile uint8_t WaveState;
+enum State { SINE, TRIANGLE, SQUARE, SQUAREHALF};
+
 void SetupSpi(void);
 void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive);
 void SendMidiFreq(uint8_t freq);
