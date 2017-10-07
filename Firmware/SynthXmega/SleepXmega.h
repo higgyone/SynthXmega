@@ -13,8 +13,8 @@
 #ifndef SLEEPXMEGA_H_
 #define SLEEPXMEGA_H_
 
- #include <avr/sleep.h>
- #include <avr/interrupt.h>
+#include <avr/sleep.h>
+#include <avr/interrupt.h>
 
 /*! \brief This code to enter sleep state.
 *

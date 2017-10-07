@@ -166,6 +166,9 @@
     <Compile Include="drivers\rtc\rtc_driver.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\sleep\sleep.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\spi\spi_driver.c">
       <SubType>compile</SubType>
     </Compile>
@@ -247,10 +250,9 @@
     <Folder Include="drivers\clock" />
     <Folder Include="drivers\adc" />
     <Folder Include="drivers\cpu" />
-    <Folder Include="drivers\timer" />
+    <Folder Include="drivers\sleep" />
     <Folder Include="drivers\rtc" />
     <Folder Include="drivers\spi" />
-    <Folder Include="drivers\sleep" />
     <Folder Include="drivers\nvm" />
     <Folder Include="drivers\port" />
     <Folder Include="utils" />

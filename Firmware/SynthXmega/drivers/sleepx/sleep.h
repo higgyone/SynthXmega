@@ -46,7 +46,7 @@
 #ifndef SLEEP_H
 #define SLEEP_H
 
-#include "avr/io.h"
+#include <compiler.h>
 
 /**
  * \defgroup sleep_group Sleep controller driver

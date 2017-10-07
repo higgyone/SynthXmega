@@ -1,10 +1,16 @@
-/*
- * RingBuffer.h
+  /*! \file 
+ *		 RingBuffer.h
  *
- * Created: 02/09/2017 22:08:25
- *  Author: Ryan
- */ 
-
+ * \brief
+ *      Header file for RingBuffer.h
+ *		based on: http://www.simplyembedded.org/tutorials/interrupt-free-ring-buffer/
+ *		Copyright (c) 2015, simplyembedded.org
+ *
+ * \author
+ *      Ryan
+ * \date 
+		02/09/2017 22:08:25
+ *****************************************************************************/ 
 
 #ifndef RINGBUFFER_H_
 #define RINGBUFFER_H_

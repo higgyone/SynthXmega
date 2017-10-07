@@ -18,6 +18,8 @@
 
 /*! \brief The number of test data bytes. */
 #define NUM_BYTES     4
+/*! \brief Number of SPI bytes sent to DDS */
+#define NUM_SPI_BYTES 2
 
 /*! \brief SPI Data packet */
 SPI_DataPacket_t dataPacket;
@@ -31,31 +33,30 @@ uint8_t masterReceivedData[NUM_BYTES];
 /*! \brief SPI master module on PORT C. */
 SPI_Master_t spiMasterC;
 
-#define NUM_SPI_BYTES 2
+/*! \brief DDS enter reset SPI command. */
 uint8_t ddsEnterReset[NUM_SPI_BYTES] = {0x21, 0x00};
-
-//uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x50, 0xc7}; // 400hz
-uint8_t ddsFreq0[NUM_SPI_BYTES] = {0x69, 0xf1}; // 1khz
-uint8_t	ddsFreq1[NUM_SPI_BYTES] = {0x40, 0x00};
-
-uint8_t ddsOffFreq[NUM_SPI_BYTES] = {0x40, 0x01};
-
+/*! \brief DDS 0 phase SPI command. */
 uint8_t ddsPhase0[NUM_SPI_BYTES] = {0xC0, 0x00};
 
-uint8_t ddsExitReset[NUM_SPI_BYTES] = {0x20, 0x00};
-
+/*! \brief DDS exit reset outputting Sine wave SPI command. */
 uint8_t ddsSineWave[NUM_SPI_BYTES] = {0x20, 0x00};
+/*! \brief DDS exit reset outputting Triangle wave SPI command. */
 uint8_t ddsTriangleWave[NUM_SPI_BYTES] = {0x20, 0x02};
+/*! \brief DDS exit reset outputting square wave SPI command. */
 uint8_t ddsSquareWave[NUM_SPI_BYTES] = {0x20, 0x28};
+/*! \brief DDS exit reset outputting square wave * 0.5 SPI command. */
 uint8_t ddsSquareWaveHalf[NUM_SPI_BYTES] = {0x20, 0x20};
 
-uint8_t ddsAll[12]  ={0x21, 0x00, 0x50, 0xc7, 0x40, 0x00, 0xC0, 0x00, 0x20, 0x00};
-
-
-
+/*! \brief Current wave selected. */
 volatile uint8_t WaveState = SINE;
 
-
+/*! \brief This function sends an SPI packet.
+*
+* \param const uint8_t *transmitData Data to send
+*		uint8_t bytesToTransceive number of bytes expected
+*
+* \return None
+ */
 void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive)
 {
 	/* Create data packet (SS to slave by PC4). */
@@ -71,7 +72,12 @@ void SendSPIPacket(const uint8_t *transmitData, uint8_t bytesToTransceive)
 
 }
 
-
+/*! \brief This function initializes the SPI.
+*
+* \param None
+*
+* \return None
+ */
 void SetupSpi(void)
  {
 	/*  Hardware setup:
@@ -102,8 +108,15 @@ void SetupSpi(void)
 					SPI_PRESCALER_DIV128_gc);
  }
 
+ /*! \brief This function sets up the AD9833 over SPI.
+*
+* \param None
+*
+* \return None
+ */
  void SetupAd9833(void)
  {
+	/* turn on with low frequency */
 	uint8_t freq0[2] = {Midi2AD9833[0][2], Midi2AD9833[0][3]};
 	uint8_t freq1[2] = {Midi2AD9833[0][0], Midi2AD9833[0][1]};
 	
@@ -111,15 +124,27 @@ void SetupSpi(void)
 	SendSPIPacket(freq0, NUM_SPI_BYTES);
 	SendSPIPacket(freq1, NUM_SPI_BYTES);
 	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
-	SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+	SetMidiOn();
  }
 
+ /*! \brief This function resets the AD9833 by turning it off and back on again with wave selected
+*
+* \param None
+*
+* \return None
+ */
  void ResetDDS(void)
  {
 	 SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
-	 SendSPIPacket(ddsExitReset, NUM_SPI_BYTES);
+	 SetMidiOn();
  }
 
+ /*! \brief This function sends an SPI packet to turn the AD9833 on with selected wave.
+*
+* \param None
+*
+* \return None
+ */
 void SetMidiOn(void)
 {
 	switch (WaveState)
@@ -142,8 +167,15 @@ void SetMidiOn(void)
 	}
 }
 
+/*! \brief This function sends the midi frequency to the AD9833.
+*
+* \param uint8_t freq 0-127 byte value for midi frequency
+*
+* \return None
+ */
 void SendMidiFreq(uint8_t freq)
 {
+/* look up table to get correct frequency from midi value*/
 	uint8_t freq0[2] = {Midi2AD9833[freq][2], Midi2AD9833[freq][3]};
 	uint8_t freq1[2] = {Midi2AD9833[freq][0], Midi2AD9833[freq][1]};
 	
@@ -152,27 +184,56 @@ void SendMidiFreq(uint8_t freq)
 	SendSPIPacket(ddsPhase0, NUM_SPI_BYTES);
 }
 
-
+/*! \brief This function turns the AD9833 off by entering reset.
+*
+* \param None
+*
+* \return None
+ */
 void SetMidiOff(void)
 {
 	SendSPIPacket(ddsEnterReset, NUM_SPI_BYTES);
 }
 
+/*! \brief This function sets the wave selector to triangle
+*
+* \param None
+*
+* \return None
+ */
 void SetTriangle(void)
 {
 	WaveState = TRIANGLE;
 }
 
+/*! \brief This function sets the wave selector to Sine
+*
+* \param None
+*
+* \return None
+ */
 void SetSine(void)
 {
 	WaveState = SINE;
 }
 
+/*! \brief This function sets the wave selector to square
+*
+* \param None
+*
+* \return None
+ */
 void SetSquare(void)
 {
 	WaveState = SQUARE;
 }
 
+/*! \brief This function sets the wave selector to square/2
+*
+* \param None
+*
+* \return None
+ */
 void SetSquareHalf(void)
 {
 	WaveState = SQUAREHALF;

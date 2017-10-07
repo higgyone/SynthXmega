@@ -168,7 +168,7 @@ ISR(RTC_OVF_vect);
 	adc_enable(&ADCA);
 }
  
-   /*! \brief This function sets up DAC 0 on port AA.
+   /*! \brief This function sets up DAC0 on port A2.
  * 12bit, unsigned and vref of AVcc/2
  * Output is PA0
  *
@@ -200,7 +200,7 @@ ISR(RTC_OVF_vect);
  }
 
    /*! \brief This function sets up the Wave type selector input.
- * It uses Port A pins 1, 3 & 4. For some reason pin 2 didn't pull up
+ * It uses Port A pins 1, 3 & 4. PA2 is for DAC 
  * Pins set as inputs and Pull ups as the switch selector will pull to ground
  * 
  * \param None

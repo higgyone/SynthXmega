@@ -80,7 +80,7 @@
 
 
    /*! \brief This function sets the current waveform depending on input values.
- * Note PA1, PA3 & PA4 are input pins used
+ * Note PA1, PA3 & PA4 are input pins used. PA2 is used for DAC0
  * truth table is:
  * Pin	4|3|2|1|0
  *      -|-|-|-|-

@@ -15,6 +15,7 @@
 #define SPI_H_
 
 extern volatile uint8_t WaveState;
+/* possible selected waves */
 enum State { SINE, TRIANGLE, SQUARE, SQUAREHALF};
 
 void SetupSpi(void);
